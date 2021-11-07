@@ -8,6 +8,8 @@ let mySprite : Sprite = null
 let Ai_U : Sprite = null
 let Ai2_U : Sprite = null
 let path = null
+let a = null
+let b = null
 let distance = 0
 function create_1() {
     
@@ -77,8 +79,14 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function on_b_pressed() {
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
     
-    sprites.setDataString(mySprite, "direction", "L")
-    animation.runImageAnimation(mySprite, assets.animation`player_Animation_L`, 100, true)
+    mySprite.ay = 0
+    let a = sprites.readDataString(mySprite, "direction")
+    if (a == "R") {
+        animation.runImageAnimation(mySprite, assets.animation`eat_2`, 100, true)
+    } else {
+        animation.runImageAnimation(mySprite, assets.animation`eat`, 100, true)
+    }
+    
 })
 function Detect_Wall(Sprite2: Sprite, Ai2: number) {
     if (Ai2 == 1) {
@@ -142,14 +150,12 @@ game.onUpdate(function on_on_update() {
         Move_by_Facing(value)
     }
 })
-function on_on_update2() {
+game.onUpdate(function on_on_update2() {
     for (let value of sprites.allOfKind(SpriteKind.enemy2)) {
         Detect_Wall(value, randint(1, 2))
         Move_by_Facing2(value)
     }
-}
-
-game.onUpdate(on_on_update2)
+})
 function Create_Block(): Sprite {
     
     Block = sprites.create(assets.image`block`, SpriteKind.Block)
@@ -161,11 +167,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function on_on_overlap(sp
     game.over(false)
 })
 create_1()
-function on_on_update3() {
+game.onUpdate(function on_on_update3() {
     if (controller.A.isPressed()) {
-        null
+        
+        a = null
+        b = null
     }
     
-}
-
-game.onUpdate(on_on_update2)
+})

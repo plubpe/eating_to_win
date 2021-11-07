@@ -8,6 +8,8 @@ mySprite: Sprite = None
 Ai_U: Sprite = None
 Ai2_U: Sprite = None
 path = None
+a = None
+b = None
 distance = 0
 
 def create_1():
@@ -90,11 +92,18 @@ controller.B.on_event(ControllerButtonEvent.PRESSED, on_b_pressed)
 
 def on_a_pressed():
     global mySprite
-    sprites.set_data_string(mySprite, "direction", "L")
-    animation.run_image_animation(mySprite,
-        assets.animation("""player_Animation_L"""),
-        100,
-        True)
+    mySprite.ay = 0
+    a=sprites.read_data_string(mySprite, "direction")
+    if a == "R":
+        animation.run_image_animation(mySprite,
+            assets.animation("""eat_2"""),
+            100,
+            True)
+    else :
+        animation.run_image_animation(mySprite,
+            assets.animation("""eat"""),
+            100,
+            True)
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 
 def Detect_Wall(Sprite2: Sprite, Ai2: number):
@@ -164,8 +173,14 @@ sprites.on_overlap(SpriteKind.player, SpriteKind.Block, on_on_overlap)
 
 create_1()
 
-def on_on_update3():
-    if controller.A.is_pressed():    
-        None
-game.on_update(on_on_update2)
 
+
+def on_on_update3():
+    if controller.A.is_pressed():
+        global a,b
+        a=None
+        b=None
+        
+
+        
+game.on_update(on_on_update3)
