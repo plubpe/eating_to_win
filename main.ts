@@ -8,8 +8,12 @@ let mySprite : Sprite = null
 let Ai_U : Sprite = null
 let Ai2_U : Sprite = null
 let path = null
-let a = null
+let g = null
 let b = null
+let t = null
+// x = None
+// y = None
+let ep = null
 let distance = 0
 function create_1() {
     
@@ -87,6 +91,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
         animation.runImageAnimation(mySprite, assets.animation`eat`, 100, true)
     }
     
+    g = tiles.locationOfSprite(mySprite)
+    b = tiles.locationOfSprite(Create_Enemy())
+    t = tiles.locationOfSprite(Create_Enemy2())
 })
 function Detect_Wall(Sprite2: Sprite, Ai2: number) {
     if (Ai2 == 1) {
@@ -167,11 +174,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function on_on_overlap(sp
     game.over(false)
 })
 create_1()
+// ep = return Math.atan2(x, y) * 180 / Math.PI
 game.onUpdate(function on_on_update3() {
-    if (controller.A.isPressed()) {
-        
-        a = null
-        b = null
-    }
     
 })

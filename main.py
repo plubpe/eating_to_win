@@ -8,8 +8,12 @@ mySprite: Sprite = None
 Ai_U: Sprite = None
 Ai2_U: Sprite = None
 path = None
-a = None
+g = None 
 b = None
+t = None
+#x = None
+#y = None
+ep = None
 distance = 0
 
 def create_1():
@@ -91,7 +95,7 @@ def on_b_pressed():
 controller.B.on_event(ControllerButtonEvent.PRESSED, on_b_pressed)
 
 def on_a_pressed():
-    global mySprite
+    global mySprite,g,b,t
     mySprite.ay = 0
     a=sprites.read_data_string(mySprite, "direction")
     if a == "R":
@@ -104,6 +108,9 @@ def on_a_pressed():
             assets.animation("""eat"""),
             100,
             True)
+    g = tiles.location_of_sprite(mySprite)
+    b = tiles.location_of_sprite(Create_Enemy())
+    t = tiles.location_of_sprite(Create_Enemy2())
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 
 def Detect_Wall(Sprite2: Sprite, Ai2: number):
@@ -176,11 +183,6 @@ create_1()
 
 
 def on_on_update3():
-    if controller.A.is_pressed():
-        global a,b
-        a=None
-        b=None
-        
-
-        
+    global g,b,t,ep
+    #ep = return Math.atan2(x, y) * 180 / Math.PI
 game.on_update(on_on_update3)
