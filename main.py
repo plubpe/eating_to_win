@@ -11,9 +11,10 @@ path = None
 g = None 
 b = None
 t = None
-#x = None
-#y = None
+x = None
+y = None
 ep = None
+angle = 0
 distance = 0
 
 def create_1():
@@ -180,9 +181,20 @@ sprites.on_overlap(SpriteKind.player, SpriteKind.Block, on_on_overlap)
 
 create_1()
 
-
-
 def on_on_update3():
-    global g,b,t,ep
-    #ep = return Math.atan2(x, y) * 180 / Math.PI
+    global g,b,t,x,y,angle
+    g = tiles.location_of_sprite(mySprite)
+    for value in sprites.all_of_kind(SpriteKind.enemy):
+        b = tiles.location_of_sprite(value)
+        x = b.x-g.x
+        y = b.y-g.y
+        angle = Math.atan2(y, x) * 180 / Math.PI
+    for value2 in sprites.all_of_kind(SpriteKind.enemy2):
+        t = tiles.location_of_sprite(value2)
+        x = t.x-g.x
+        y = t.y-g.y
+        angle = Math.atan2(y, x) * 180 / Math.PI
+        #value2.say_text(""+angle)
 game.on_update(on_on_update3)
+    
+

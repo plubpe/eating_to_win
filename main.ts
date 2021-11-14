@@ -11,9 +11,10 @@ let path = null
 let g = null
 let b = null
 let t = null
-// x = None
-// y = None
+let x = null
+let y = null
 let ep = null
+let angle = 0
 let distance = 0
 function create_1() {
     
@@ -174,7 +175,20 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function on_on_overlap(sp
     game.over(false)
 })
 create_1()
-// ep = return Math.atan2(x, y) * 180 / Math.PI
+// value2.say_text(""+angle)
 game.onUpdate(function on_on_update3() {
     
+    g = tiles.locationOfSprite(mySprite)
+    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+        b = tiles.locationOfSprite(value)
+        x = b.x - g.x
+        y = b.y - g.y
+        angle = Math.atan2(y, x) * 180 / Math.PI
+    }
+    for (let value2 of sprites.allOfKind(SpriteKind.enemy2)) {
+        t = tiles.locationOfSprite(value2)
+        x = t.x - g.x
+        y = t.y - g.y
+        angle = Math.atan2(y, x) * 180 / Math.PI
+    }
 })
