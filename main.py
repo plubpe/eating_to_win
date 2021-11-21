@@ -13,6 +13,7 @@ b = None
 t = None
 x = None
 y = None
+p = 0
 ep = None
 angle = 0
 distance = 0
@@ -182,19 +183,53 @@ sprites.on_overlap(SpriteKind.player, SpriteKind.Block, on_on_overlap)
 create_1()
 
 def on_on_update3():
-    global g,b,t,x,y,angle
+    global g,b,t,x,y,angle,p
+    a=sprites.read_data_string(mySprite, "direction")
     g = tiles.location_of_sprite(mySprite)
-    for value in sprites.all_of_kind(SpriteKind.enemy):
-        b = tiles.location_of_sprite(value)
-        x = b.x-g.x
-        y = b.y-g.y
-        angle = Math.atan2(y, x) * 180 / Math.PI
-    for value2 in sprites.all_of_kind(SpriteKind.enemy2):
-        t = tiles.location_of_sprite(value2)
-        x = t.x-g.x
-        y = t.y-g.y
-        angle = Math.atan2(y, x) * 180 / Math.PI
-        #value2.say_text(""+angle)
+    if controller.A.is_pressed() and a == "R":
+        for value in sprites.all_of_kind(SpriteKind.enemy):
+            b = tiles.location_of_sprite(value)
+            x = b.x-g.x
+            y = b.y-g.y
+            p = Math.sqrt(x**2+y**2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if p <= 40 and angle <= 45:
+                value.vx=-100
+            #value.say_text("" + p)
+            #print(p)
+            #print("x = "+x)
+            #print("y = "+y)
+        for value2 in sprites.all_of_kind(SpriteKind.enemy2):
+            t = tiles.location_of_sprite(value2)
+            x = t.x-g.x
+            y = t.y-g.y
+            p = Math.sqrt(x**2+y**2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if p <= 40 and angle <= 45:
+                value2.vx=-100
+            #value2.say_text(""+angle)
+    elif controller.A.is_pressed() and a == "L":
+        for value3 in sprites.all_of_kind(SpriteKind.enemy):
+            b = tiles.location_of_sprite(value3)
+            x = b.x-g.x
+            y = b.y-g.y
+            p = Math.sqrt(x**2+y**2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if p >= -40 and angle >= 135:
+                value3.vx=100
+            print(p)
+            print("x = "+x)
+            print("y = "+y)
+            print("angle = "+angle)
+            #value3.say_text(""+p)
+        for value4 in sprites.all_of_kind(SpriteKind.enemy2):
+            t = tiles.location_of_sprite(value4)
+            x = t.x-g.x
+            y = t.y-g.y
+            p = Math.sqrt(x**2+y**2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if p >= -40 and angle >= 135:
+                value4.vx=100
+            #value4.say_text(""+angle)
 game.on_update(on_on_update3)
     
-

@@ -13,6 +13,7 @@ let b = null
 let t = null
 let x = null
 let y = null
+let p = 0
 let ep = null
 let angle = 0
 let distance = 0
@@ -175,20 +176,67 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function on_on_overlap(sp
     game.over(false)
 })
 create_1()
-// value2.say_text(""+angle)
+// value4.say_text(""+angle)
 game.onUpdate(function on_on_update3() {
     
+    let a = sprites.readDataString(mySprite, "direction")
     g = tiles.locationOfSprite(mySprite)
-    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
-        b = tiles.locationOfSprite(value)
-        x = b.x - g.x
-        y = b.y - g.y
-        angle = Math.atan2(y, x) * 180 / Math.PI
+    if (controller.A.isPressed() && a == "R") {
+        for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+            b = tiles.locationOfSprite(value)
+            x = b.x - g.x
+            y = b.y - g.y
+            p = Math.sqrt(x ** 2 + y ** 2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if (p <= 40 && angle <= 45) {
+                value.vx = -100
+            }
+            
+        }
+        // value.say_text("" + p)
+        // print(p)
+        // print("x = "+x)
+        // print("y = "+y)
+        for (let value2 of sprites.allOfKind(SpriteKind.enemy2)) {
+            t = tiles.locationOfSprite(value2)
+            x = t.x - g.x
+            y = t.y - g.y
+            p = Math.sqrt(x ** 2 + y ** 2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if (p <= 40 && angle <= 45) {
+                value2.vx = -100
+            }
+            
+        }
+    } else if (controller.A.isPressed() && a == "L") {
+        // value2.say_text(""+angle)
+        for (let value3 of sprites.allOfKind(SpriteKind.Enemy)) {
+            b = tiles.locationOfSprite(value3)
+            x = b.x - g.x
+            y = b.y - g.y
+            p = Math.sqrt(x ** 2 + y ** 2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if (p >= -40 && angle >= 135) {
+                value3.vx = 100
+            }
+            
+            console.log(p)
+            console.log("x = " + x)
+            console.log("y = " + y)
+            console.log("angle = " + angle)
+        }
+        // value3.say_text(""+p)
+        for (let value4 of sprites.allOfKind(SpriteKind.enemy2)) {
+            t = tiles.locationOfSprite(value4)
+            x = t.x - g.x
+            y = t.y - g.y
+            p = Math.sqrt(x ** 2 + y ** 2)
+            angle = Math.atan2(y, x) * 180 / Math.PI
+            if (p >= -40 && angle >= 135) {
+                value4.vx = 100
+            }
+            
+        }
     }
-    for (let value2 of sprites.allOfKind(SpriteKind.enemy2)) {
-        t = tiles.locationOfSprite(value2)
-        x = t.x - g.x
-        y = t.y - g.y
-        angle = Math.atan2(y, x) * 180 / Math.PI
-    }
+    
 })
