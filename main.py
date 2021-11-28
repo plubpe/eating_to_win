@@ -13,6 +13,8 @@ b = None
 t = None
 x = None
 y = None
+em = 0
+em1 = 0
 p = 0
 ep = None
 angle = 0
@@ -22,7 +24,6 @@ def create_1():
     global mySprite
     scene.set_background_image(assets.image("""myImage8"""))
     tiles.set_tilemap(tilemap("""level1"""))
-    Enemy0 =  sprites.create(assets.image("""Ai_U"""),SpriteKind.enemy)
     Enemy1 = Create_Enemy()
     Enemy2 = Create_Enemy()
     Enemy3 = Create_Enemy()
@@ -33,7 +34,6 @@ def create_1():
     Enemy8 = Create_Enemy2()
     Block1 = Create_Block()
     Block2 = Create_Block()
-    tiles.place_on_tile(Enemy0, tiles.get_tile_location(5, 16))
     tiles.place_on_tile(Enemy1, tiles.get_tile_location(14, 15))
     tiles.place_on_tile(Enemy2, tiles.get_tile_location(21, 15))
     tiles.place_on_tile(Enemy3, tiles.get_tile_location(30, 15))
@@ -97,22 +97,32 @@ def on_b_pressed():
 controller.B.on_event(ControllerButtonEvent.PRESSED, on_b_pressed)
 
 def on_a_pressed():
-    global mySprite,g,b,t
+    global mySprite,g,b,t,em,em1
     mySprite.ay = 0
     a=sprites.read_data_string(mySprite, "direction")
-    if a == "R":
+    if a == "R" and em == 0 and em1 == 0:
         animation.run_image_animation(mySprite,
             assets.animation("""eat_2"""),
             100,
             True)
-    else :
+    elif a == "L" and em == 0 and em1 == 0 :
         animation.run_image_animation(mySprite,
             assets.animation("""eat"""),
             100,
             True)
-    g = tiles.location_of_sprite(mySprite)
-    b = tiles.location_of_sprite(Create_Enemy())
-    t = tiles.location_of_sprite(Create_Enemy2())
+    elif a == "L" and em == 1 and em1 == 0 :
+        pass
+        #em = 0
+    elif a == "L" and em == 0 and em1 == 1 :
+        pass
+        #em1 = 0
+    elif a == "R" and em == 1 and em1 == 0 :
+        pass
+        #em = 0
+    elif a == "R" and em == 0 and em1 == 1 :
+        pass
+        #em1 = 0
+    print(em)
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 
 def Detect_Wall(Sprite2: Sprite, Ai2: number):
@@ -183,7 +193,7 @@ sprites.on_overlap(SpriteKind.player, SpriteKind.Block, on_on_overlap)
 create_1()
 
 def on_on_update3():
-    global g,b,t,x,y,angle,p
+    global g,b,t,x,y,angle,p,em,em1
     a=sprites.read_data_string(mySprite, "direction")
     g = tiles.location_of_sprite(mySprite)
     if controller.A.is_pressed() and a == "R":
@@ -217,10 +227,10 @@ def on_on_update3():
             angle = Math.atan2(y, x) * 180 / Math.PI
             if p >= -40 and angle >= 135:
                 value3.vx=100
-            print(p)
-            print("x = "+x)
-            print("y = "+y)
-            print("angle = "+angle)
+            #print(p)
+            #print("x = "+x)
+            #print("y = "+y)
+            #print("angle = "+angle)
             #value3.say_text(""+p)
         for value4 in sprites.all_of_kind(SpriteKind.enemy2):
             t = tiles.location_of_sprite(value4)
@@ -232,4 +242,23 @@ def on_on_update3():
                 value4.vx=100
             #value4.say_text(""+angle)
 game.on_update(on_on_update3)
-    
+
+def on_on_overlap2(sprite, otherSprite):
+    if controller.player1.is_pressed(ControllerButton.A):
+        em = 1
+        otherSprite.destroy()
+        otherSprite.say_text(":)")
+    else :
+        pass
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap2)
+
+def on_on_overlap3(sprite, otherSprite):
+    if controller.player1.is_pressed(ControllerButton.A):
+        sprites.change_data_number_by(sprite, "em1", 1)
+        #em ไม่เปลี่ยน
+        otherSprite.destroy()
+        otherSprite.say_text(":)")
+    else :
+        pass
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy2, on_on_overlap3)       
+

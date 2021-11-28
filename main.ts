@@ -13,6 +13,8 @@ let b = null
 let t = null
 let x = null
 let y = null
+let em = 0
+let em1 = 0
 let p = 0
 let ep = null
 let angle = 0
@@ -21,7 +23,6 @@ function create_1() {
     
     scene.setBackgroundImage(assets.image`myImage8`)
     tiles.setTilemap(tilemap`level1`)
-    let Enemy0 = sprites.create(assets.image`Ai_U`, SpriteKind.Enemy)
     let Enemy1 = Create_Enemy()
     let Enemy2 = Create_Enemy()
     let Enemy3 = Create_Enemy()
@@ -32,7 +33,6 @@ function create_1() {
     let Enemy8 = Create_Enemy2()
     let Block1 = Create_Block()
     let Block2 = Create_Block()
-    tiles.placeOnTile(Enemy0, tiles.getTileLocation(5, 16))
     tiles.placeOnTile(Enemy1, tiles.getTileLocation(14, 15))
     tiles.placeOnTile(Enemy2, tiles.getTileLocation(21, 15))
     tiles.placeOnTile(Enemy3, tiles.getTileLocation(30, 15))
@@ -87,15 +87,25 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
     
     mySprite.ay = 0
     let a = sprites.readDataString(mySprite, "direction")
-    if (a == "R") {
+    if (a == "R" && em == 0 && em1 == 0) {
         animation.runImageAnimation(mySprite, assets.animation`eat_2`, 100, true)
-    } else {
+    } else if (a == "L" && em == 0 && em1 == 0) {
         animation.runImageAnimation(mySprite, assets.animation`eat`, 100, true)
+    } else if (a == "L" && em == 1 && em1 == 0) {
+        
+    } else if (a == "L" && em == 0 && em1 == 1) {
+        // em = 0
+        
+    } else if (a == "R" && em == 1 && em1 == 0) {
+        // em1 = 0
+        
+    } else if (a == "R" && em == 0 && em1 == 1) {
+        // em = 0
+        
     }
     
-    g = tiles.locationOfSprite(mySprite)
-    b = tiles.locationOfSprite(Create_Enemy())
-    t = tiles.locationOfSprite(Create_Enemy2())
+    // em1 = 0
+    console.log(em)
 })
 function Detect_Wall(Sprite2: Sprite, Ai2: number) {
     if (Ai2 == 1) {
@@ -220,11 +230,11 @@ game.onUpdate(function on_on_update3() {
                 value3.vx = 100
             }
             
-            console.log(p)
-            console.log("x = " + x)
-            console.log("y = " + y)
-            console.log("angle = " + angle)
         }
+        // print(p)
+        // print("x = "+x)
+        // print("y = "+y)
+        // print("angle = "+angle)
         // value3.say_text(""+p)
         for (let value4 of sprites.allOfKind(SpriteKind.enemy2)) {
             t = tiles.locationOfSprite(value4)
@@ -237,6 +247,28 @@ game.onUpdate(function on_on_update3() {
             }
             
         }
+    }
+    
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
+    let em: number;
+    if (controller.player1.isPressed(ControllerButton.A)) {
+        em = 1
+        otherSprite.destroy()
+        otherSprite.sayText(":)")
+    } else {
+        
+    }
+    
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.enemy2, function on_on_overlap3(sprite: Sprite, otherSprite: Sprite) {
+    if (controller.player1.isPressed(ControllerButton.A)) {
+        sprites.changeDataNumberBy(sprite, "em1", 1)
+        // em ไม่เปลี่ยน
+        otherSprite.destroy()
+        otherSprite.sayText(":)")
+    } else {
+        
     }
     
 })
